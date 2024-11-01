@@ -6,7 +6,7 @@ public class PersonalNumber {
 
     String fullNumber;
 
-    LocalDate LocalDateBirthday;
+    LocalDate birthDate;
 
     String century;
 
@@ -23,32 +23,37 @@ public class PersonalNumber {
     }
 
     public void initializePersonalNumber() {
-
-//        // remove dash
-//        fullNumber = removeDashFromNumber();
-
-        // set control number
-
-        // set lastThree
-        // set first six
-        // set century
-
+        addDashIfNeeded();
         setControlNumber();
         setLastThree();
-
         setFirstSix();
+        century = getCentury();
+        setBirthDate();
+    }
 
-        System.out.println("hello");
+    public void addDashIfNeeded() {
+        if (!(fullNumber.contains("-") || fullNumber.contains("+"))) {
+            StringBuilder stringBuilder = new StringBuilder(fullNumber);
+            stringBuilder.insert(fullNumber.length() - 4, "-");
+            fullNumber = stringBuilder.toString();
+        }
+    }
+
+    public void setBirthDate() {
+        int year = Integer.parseInt(century + firstSix.substring(0,2));
+        int month = Integer.parseInt(firstSix.substring(2,4));
+        int day = Integer.parseInt(firstSix.substring(4,6));
+        birthDate = LocalDate.of(year, month, day);
     }
 
     public void setFirstSix() {
+        int index;
         if (fullNumber.contains("-")) {
-            int index = fullNumber.indexOf("-");
-            firstSix = fullNumber.substring(index - 6, index);
+            index = fullNumber.indexOf("-");
         } else {
-            int length = fullNumber.length();
-            firstSix = fullNumber.substring(length - 10, length - 4);
+            index = fullNumber.indexOf("+");
         }
+        firstSix = fullNumber.substring(index - 6, index);
     }
 
     public void setLastThree() {
@@ -59,31 +64,27 @@ public class PersonalNumber {
         controlNumber = Integer.parseInt(fullNumber.substring(fullNumber.length()-1));
     }
 
-
-    public void addCenturyOnPersonNumber() {
+    public String getCentury() {
 
         LocalDate localDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
-        LocalDate birthDate = LocalDate.parse(fullNumber.substring(0,6), DateTimeFormatter.ofPattern("yyMMdd"));
+        LocalDate birthDate = LocalDate.parse(firstSix, DateTimeFormatter.ofPattern("yyMMdd"));
+
+        if (fullNumber.length() == 13) {
+            return fullNumber.substring(0,2);
+        }
 
         if (fullNumber.contains("+")) {
             if (birthDate.isAfter(localDate)) {
-                LocalDateBirthday = birthDate.minusYears(200);
+                return "18";
             } else {
-                LocalDateBirthday = birthDate.minusYears(100);
+                return "19";
             }
         } else {
             if (birthDate.isBefore(localDate)) {
-                LocalDateBirthday = birthDate.minusYears(100);
+                return "20";
+            } else {
+                return "19";
             }
         }
-
-    }
-
-    public String removeDashFromNumber() {
-        return fullNumber.replace("-", "");
-    }
-
-    public LocalDate getLocalDateBirthday() {
-        return LocalDateBirthday;
     }
 }

@@ -14,31 +14,35 @@ public class UnitTests {
     @Test
     public void verifyReadingTextFromFile() throws IOException {
         List<String> personalNumbers = util.readStringsFromFile(Paths.get("src/main/resources/personalNumbers.txt").toString());
-
-        String firstValueInPersonalNumbers = "201701102384";
         int personalNumbersSize = personalNumbers.size();
+        String firstValueInPersonalNumbers = "201701102384";
 
         assertEquals(14, personalNumbersSize);
         assertEquals(firstValueInPersonalNumbers, personalNumbers.getFirst());
     }
 
     @Test
-    public void addPersonOlderThan100() {
-        PersonalNumber firstPersonalNumber = new PersonalNumber("900118+9811");
-        PersonalNumber secondPersonalNumber = new PersonalNumber("050217+5633");
+    public void verifyCentury() {
+        PersonalNumber first = new PersonalNumber("900118+9811");
+        PersonalNumber second = new PersonalNumber("050217+5633");
+        PersonalNumber third = new PersonalNumber("201701102384");
 
-        firstPersonalNumber.addCenturyOnPersonNumber();
-        secondPersonalNumber.addCenturyOnPersonNumber();
-        assertEquals(LocalDate.of(1890, 1, 18), firstPersonalNumber.getLocalDateBirthday());
-        assertEquals(LocalDate.of(1905, 2, 17), secondPersonalNumber.getLocalDateBirthday());
+        first.initializePersonalNumber();
+        second.initializePersonalNumber();
+        third.initializePersonalNumber();
+
+        assertEquals("18", first.getCentury());
+        assertEquals("19", second.getCentury());
+        assertEquals("20", third.getCentury());
     }
-
 
     @Test
-    public void addCenturyForPersonBornIn2000s() {
-        PersonalNumber personalNumber = new PersonalNumber("041104-5312");
+    public void verifyBirthDate() {
+        PersonalNumber first = new PersonalNumber("201701102384");
+        LocalDate localDate = LocalDate.of(2017, 1, 10);
 
-        personalNumber.addCenturyOnPersonNumber();
+        first.initializePersonalNumber();
+
+        assertEquals(localDate, first.birthDate);
     }
-
 }
