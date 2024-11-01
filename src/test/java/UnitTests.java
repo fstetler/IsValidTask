@@ -47,7 +47,7 @@ public class UnitTests {
     }
 
     @Test
-    public void luhnsAlgoritm() {
+    public void luhnsAlgorithm() {
 
         PersonalNumber personalNumber = new PersonalNumber("811218-9876");
         personalNumber.initializePersonalNumber();
