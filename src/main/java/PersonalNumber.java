@@ -1,10 +1,13 @@
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PersonalNumber {
 
-    String fullNumber;
+    String fullString;
 
     LocalDate birthDate;
 
@@ -19,7 +22,7 @@ public class PersonalNumber {
     boolean valid;
 
     public PersonalNumber(String number) {
-        this.fullNumber = number;
+        this.fullString = number;
     }
 
     public void initializePersonalNumber() {
@@ -29,13 +32,14 @@ public class PersonalNumber {
         setFirstSix();
         century = getCentury();
         setBirthDate();
+        valid = luhnsAlgorithm() == controlNumber;
     }
 
     public void addDashIfNeeded() {
-        if (!(fullNumber.contains("-") || fullNumber.contains("+"))) {
-            StringBuilder stringBuilder = new StringBuilder(fullNumber);
-            stringBuilder.insert(fullNumber.length() - 4, "-");
-            fullNumber = stringBuilder.toString();
+        if (!(fullString.contains("-") || fullString.contains("+"))) {
+            StringBuilder stringBuilder = new StringBuilder(fullString);
+            stringBuilder.insert(fullString.length() - 4, "-");
+            fullString = stringBuilder.toString();
         }
     }
 
@@ -48,20 +52,20 @@ public class PersonalNumber {
 
     public void setFirstSix() {
         int index;
-        if (fullNumber.contains("-")) {
-            index = fullNumber.indexOf("-");
+        if (fullString.contains("-")) {
+            index = fullString.indexOf("-");
         } else {
-            index = fullNumber.indexOf("+");
+            index = fullString.indexOf("+");
         }
-        firstSix = fullNumber.substring(index - 6, index);
+        firstSix = fullString.substring(index - 6, index);
     }
 
     public void setLastThree() {
-        lastThree = fullNumber.substring(fullNumber.length() - 4, fullNumber.length() - 1);
+        lastThree = fullString.substring(fullString.length() - 4, fullString.length() - 1);
     }
 
     public void setControlNumber() {
-        controlNumber = Integer.parseInt(fullNumber.substring(fullNumber.length()-1));
+        controlNumber = Integer.parseInt(fullString.substring(fullString.length()-1));
     }
 
     public String getCentury() {
@@ -69,11 +73,11 @@ public class PersonalNumber {
         LocalDate localDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
         LocalDate birthDate = LocalDate.parse(firstSix, DateTimeFormatter.ofPattern("yyMMdd"));
 
-        if (fullNumber.length() == 13) {
-            return fullNumber.substring(0,2);
+        if (fullString.length() == 13) {
+            return fullString.substring(0,2);
         }
 
-        if (fullNumber.contains("+")) {
+        if (fullString.contains("+")) {
             if (birthDate.isAfter(localDate)) {
                 return "18";
             } else {
@@ -86,5 +90,22 @@ public class PersonalNumber {
                 return "19";
             }
         }
+    }
+
+    public int luhnsAlgorithm() {
+        String numberToEvaluate = firstSix + lastThree;
+
+        List<Integer> numbers = numberToEvaluate.chars().map(Character::getNumericValue).boxed().toList();
+
+        List<Integer> numbersMultipliedByOneOrTwo = IntStream.range(0, numbers.size())
+                .map(n -> n % 2 == 0 ? numbers.get(n) * 2 : numbers.get(n))
+                .boxed()
+                .toList();
+
+        String joinedNumbers = numbersMultipliedByOneOrTwo.stream().map(String::valueOf).collect(Collectors.joining());
+
+        int totalSum = joinedNumbers.chars().map(Character::getNumericValue).sum();
+
+        return (10 - (totalSum % 10)) % 10;
     }
 }

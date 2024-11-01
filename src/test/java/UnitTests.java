@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class UnitTests {
 
@@ -47,13 +47,29 @@ public class UnitTests {
     }
 
     @Test
-    public void luhnsAlgorithm() {
+    public void assertLuhnsAlgorithm() {
 
         PersonalNumber personalNumber = new PersonalNumber("811218-9876");
         personalNumber.initializePersonalNumber();
 
-        int luhnsValue = util.luhnsAlgorithm(personalNumber);
+        int luhnsValue = personalNumber.luhnsAlgorithm();
 
         assertEquals(6, luhnsValue);
+    }
+
+    @Test
+    public void assertFailingPersonalNumberLuhns() {
+        PersonalNumber personalNumber = new PersonalNumber("201701272394");
+        personalNumber.initializePersonalNumber();
+
+        assertFalse(personalNumber.valid);
+    }
+
+    @Test
+    public void assertSuccessPersonalNumberLuhns() {
+        PersonalNumber personalNumber = new PersonalNumber("189912299816");
+        personalNumber.initializePersonalNumber();
+
+        assertTrue(personalNumber.valid);
     }
 }
