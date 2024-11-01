@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,5 +13,16 @@ public class Util {
             }
         }
         return stringList;
+    }
+
+    public void txtWriter(List<String> strings, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : strings) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("An error occurred: " + e.getMessage());
+        }
     }
 }

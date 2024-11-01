@@ -17,7 +17,7 @@ public class UnitTests {
         int personalNumbersSize = personalNumbers.size();
         String firstValueInPersonalNumbers = "201701102384";
 
-        assertEquals(14, personalNumbersSize);
+        assertEquals(17, personalNumbersSize);
         assertEquals(firstValueInPersonalNumbers, personalNumbers.getFirst());
     }
 
@@ -37,16 +37,6 @@ public class UnitTests {
     }
 
     @Test
-    public void verifyBirthDate() {
-        PersonalNumber first = new PersonalNumber("201701102384");
-        LocalDate localDate = LocalDate.of(2017, 1, 10);
-
-        first.initializePersonalNumber();
-
-        assertEquals(localDate, first.birthDate);
-    }
-
-    @Test
     public void assertLuhnsAlgorithm() {
 
         PersonalNumber personalNumber = new PersonalNumber("811218-9876");
@@ -62,7 +52,7 @@ public class UnitTests {
         PersonalNumber personalNumber = new PersonalNumber("201701272394");
         personalNumber.initializePersonalNumber();
 
-        assertFalse(personalNumber.valid);
+        assertFalse(personalNumber.isValid);
     }
 
     @Test
@@ -70,6 +60,13 @@ public class UnitTests {
         PersonalNumber personalNumber = new PersonalNumber("189912299816");
         personalNumber.initializePersonalNumber();
 
-        assertTrue(personalNumber.valid);
+        assertTrue(personalNumber.isValid);
+    }
+
+    @Test
+    public void verifyValidLuhnsForSamordningsNummer() {
+        PersonalNumber personalNumber = new PersonalNumber("190910799824");
+        personalNumber.initializePersonalNumber();
+        assertEquals(4, personalNumber.controlNumber);
     }
 }

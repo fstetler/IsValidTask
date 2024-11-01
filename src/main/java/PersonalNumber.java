@@ -1,3 +1,4 @@
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -9,8 +10,6 @@ public class PersonalNumber {
 
     String fullString;
 
-    LocalDate birthDate;
-
     String century;
 
     String yyMmDd;
@@ -19,7 +18,9 @@ public class PersonalNumber {
 
     int controlNumber;
 
-    boolean valid;
+    boolean isValid;
+
+    boolean isSamOrdningsNummer;
 
     public PersonalNumber(String number) {
         this.fullString = number;
@@ -27,12 +28,20 @@ public class PersonalNumber {
 
     public void initializePersonalNumber() {
         addDashIfNeeded();
+
         setControlNumber();
         setLastThree();
         setYyMmDd();
+        setSamOrdningsNummer();
         century = getCentury();
-        setBirthDate();
-        valid = luhnsAlgorithm() == controlNumber;
+        isValid = luhnsAlgorithm() == controlNumber;
+        checkIsValidDate();
+    }
+
+    private void setSamOrdningsNummer() {
+        if (Integer.parseInt(yyMmDd.substring(4,6)) > 31) {
+            isSamOrdningsNummer = true;
+        }
     }
 
     public void addDashIfNeeded() {
@@ -43,11 +52,15 @@ public class PersonalNumber {
         }
     }
 
-    public void setBirthDate() {
+    public void checkIsValidDate() {
         int year = Integer.parseInt(century + yyMmDd.substring(0,2));
         int month = Integer.parseInt(yyMmDd.substring(2,4));
-        int day = Integer.parseInt(yyMmDd.substring(4,6));
-        birthDate = LocalDate.of(year, month, day);
+        int day = isSamOrdningsNummer ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
+        try {
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException dte) {
+            isValid = false;
+        }
     }
 
     public void setYyMmDd() {
@@ -70,7 +83,11 @@ public class PersonalNumber {
 
     public String getCentury() {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
-        LocalDate birthDate = LocalDate.parse(yyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
+        String tempYyMmDd = yyMmDd;
+        if (isSamOrdningsNummer) {
+            tempYyMmDd = yyMmDd.substring(0,4) + (Integer.parseInt(yyMmDd.substring(4,6)) - 60);
+        }
+        LocalDate birthDate = LocalDate.parse(tempYyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
 
         if (fullString.length() == 13) {
             return fullString.substring(0,2);
@@ -79,32 +96,45 @@ public class PersonalNumber {
         if (fullString.contains("+")) {
             if (birthDate.isAfter(currentDate)) {
                 return "18";
-            } else {
-                return "19";
             }
         } else {
             if (birthDate.isBefore(currentDate)) {
                 return "20";
-            } else {
-                return "19";
             }
         }
+        return "19";
     }
 
     public int luhnsAlgorithm() {
         String numberToEvaluate = yyMmDd + lastThree;
+        List<Integer> numbers = numbersFromString(numberToEvaluate);
+        List<Integer> numbersMultipliedByOneOrTwo = multiplyEveryOtherNumberByTwo(numbers);
+        String joinedNumbers = joinNumbersFromList(numbersMultipliedByOneOrTwo);
+        int totalSum = sumAllNumbersFromString(joinedNumbers);
 
-        List<Integer> numbers = numberToEvaluate.chars().map(Character::getNumericValue).boxed().toList();
+        return luhnsCalculation(totalSum);
+    }
 
-        List<Integer> numbersMultipliedByOneOrTwo = IntStream.range(0, numbers.size())
+    private List<Integer> numbersFromString(String numbers) {
+        return numbers.chars().map(Character::getNumericValue).boxed().toList();
+    }
+
+    private List<Integer> multiplyEveryOtherNumberByTwo(List<Integer> numbers) {
+        return IntStream.range(0, numbers.size())
                 .map(n -> n % 2 == 0 ? numbers.get(n) * 2 : numbers.get(n))
                 .boxed()
                 .toList();
+    }
 
-        String joinedNumbers = numbersMultipliedByOneOrTwo.stream().map(String::valueOf).collect(Collectors.joining());
+    private String joinNumbersFromList(List<Integer> numbers) {
+        return numbers.stream().map(String::valueOf).collect(Collectors.joining());
+    }
 
-        int totalSum = joinedNumbers.chars().map(Character::getNumericValue).sum();
+    private int sumAllNumbersFromString(String numbers) {
+        return numbers.chars().map(Character::getNumericValue).sum();
+    }
 
-        return (10 - (totalSum % 10)) % 10;
+    private int luhnsCalculation(int sum) {
+        return (10 - (sum % 10)) % 10;
     }
 }

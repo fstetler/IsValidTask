@@ -12,7 +12,11 @@ public class Main {
         List<PersonalNumber> personalNumbers = numbers.stream().map(PersonalNumber::new).toList();
         personalNumbers.forEach(PersonalNumber::initializePersonalNumber);
 
-        System.out.printf("hej");
+        List<String> validPersonalNumbers = personalNumbers.stream().filter(pn -> pn.isValid).map(pn -> pn.fullString).toList();
+        List<String> notValidPersonalNumbers = personalNumbers.stream().filter(pn -> !pn.isValid).map(pn -> pn.fullString).toList();
+
+        util.txtWriter(validPersonalNumbers, "src/main/resources/validPersonalNumbersFile.txt");
+        util.txtWriter(notValidPersonalNumbers, "src/main/resources/notValidPersonalNumbersFile.txt");
 
     }
 }
