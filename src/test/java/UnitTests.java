@@ -45,4 +45,15 @@ public class UnitTests {
 
         assertEquals(localDate, first.birthDate);
     }
+
+    @Test
+    public void luhnsAlgoritm() {
+
+        PersonalNumber personalNumber = new PersonalNumber("811218-9876");
+        personalNumber.initializePersonalNumber();
+
+        int luhnsValue = util.luhnsAlgorithm(personalNumber);
+
+        assertEquals(6, luhnsValue);
+    }
 }

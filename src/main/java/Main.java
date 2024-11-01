@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws IOException {
 
@@ -14,7 +12,7 @@ public class Main {
         List<PersonalNumber> personalNumbers = numbers.stream().map(PersonalNumber::new).toList();
         personalNumbers.forEach(PersonalNumber::initializePersonalNumber);
 
-
+        System.out.printf("hej");
 
     }
 }
