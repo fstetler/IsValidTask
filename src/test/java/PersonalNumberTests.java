@@ -2,18 +2,17 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class UnitTests {
+public class PersonalNumberTests {
 
     Util util = new Util();
 
     @Test
     public void verifyReadingTextFromFile() throws IOException {
-        List<String> personalNumbers = util.readStringsFromFile(Paths.get("src/main/resources/personalNumbers.txt").toString());
+        List<String> personalNumbers = util.readStringsFromFile(Paths.get("src/main/resources/allNumbers.txt").toString());
         int personalNumbersSize = personalNumbers.size();
         String firstValueInPersonalNumbers = "201701102384";
 
@@ -68,5 +67,13 @@ public class UnitTests {
         PersonalNumber personalNumber = new PersonalNumber("190910799824");
         personalNumber.initializePersonalNumber();
         assertEquals(4, personalNumber.controlNumber);
+    }
+
+    @Test
+    public void verifyOrganisationNumberLuhnsValue() {
+        PersonalNumber personalNumber = new PersonalNumber("556614-3185");
+        personalNumber.initializePersonalNumber();
+        assertEquals(5, personalNumber.luhnsAlgorithm());
+        assertTrue(personalNumber.isValid);
     }
 }

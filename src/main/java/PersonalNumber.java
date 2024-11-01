@@ -20,7 +20,11 @@ public class PersonalNumber {
 
     boolean isValid;
 
-    boolean isSamOrdningsNummer;
+    boolean isSamOrdningsNumber;
+
+    boolean isPersonalNumber;
+
+    boolean isOrganisationsNumber;
 
     public PersonalNumber(String number) {
         this.fullString = number;
@@ -32,15 +36,21 @@ public class PersonalNumber {
         setControlNumber();
         setLastThree();
         setYyMmDd();
-        setSamOrdningsNummer();
-        century = getCentury();
+        setTypeOfNummer();
         isValid = luhnsAlgorithm() == controlNumber;
-        checkIsValidDate();
+        if (isPersonalNumber) {
+            century = getCentury();
+            checkIsValidDate();
+        }
     }
 
-    private void setSamOrdningsNummer() {
+    private void setTypeOfNummer() {
         if (Integer.parseInt(yyMmDd.substring(4,6)) > 31) {
-            isSamOrdningsNummer = true;
+            isSamOrdningsNumber = true;
+        } else if (Integer.parseInt(yyMmDd.substring(2,4)) >= 20) {
+            isOrganisationsNumber = true;
+        } else {
+            isPersonalNumber = true;
         }
     }
 
@@ -55,7 +65,7 @@ public class PersonalNumber {
     public void checkIsValidDate() {
         int year = Integer.parseInt(century + yyMmDd.substring(0,2));
         int month = Integer.parseInt(yyMmDd.substring(2,4));
-        int day = isSamOrdningsNummer ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
+        int day = isSamOrdningsNumber ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
         try {
             LocalDate.of(year, month, day);
         } catch (DateTimeException dte) {
@@ -84,7 +94,7 @@ public class PersonalNumber {
     public String getCentury() {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
         String tempYyMmDd = yyMmDd;
-        if (isSamOrdningsNummer) {
+        if (isSamOrdningsNumber) {
             tempYyMmDd = yyMmDd.substring(0,4) + (Integer.parseInt(yyMmDd.substring(4,6)) - 60);
         }
         LocalDate birthDate = LocalDate.parse(tempYyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
