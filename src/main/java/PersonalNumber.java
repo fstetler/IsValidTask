@@ -13,7 +13,7 @@ public class PersonalNumber {
 
     String century;
 
-    String firstSix;
+    String yyMmDd;
 
     String lastThree;
 
@@ -29,7 +29,7 @@ public class PersonalNumber {
         addDashIfNeeded();
         setControlNumber();
         setLastThree();
-        setFirstSix();
+        setYyMmDd();
         century = getCentury();
         setBirthDate();
         valid = luhnsAlgorithm() == controlNumber;
@@ -44,20 +44,20 @@ public class PersonalNumber {
     }
 
     public void setBirthDate() {
-        int year = Integer.parseInt(century + firstSix.substring(0,2));
-        int month = Integer.parseInt(firstSix.substring(2,4));
-        int day = Integer.parseInt(firstSix.substring(4,6));
+        int year = Integer.parseInt(century + yyMmDd.substring(0,2));
+        int month = Integer.parseInt(yyMmDd.substring(2,4));
+        int day = Integer.parseInt(yyMmDd.substring(4,6));
         birthDate = LocalDate.of(year, month, day);
     }
 
-    public void setFirstSix() {
+    public void setYyMmDd() {
         int index;
         if (fullString.contains("-")) {
             index = fullString.indexOf("-");
         } else {
             index = fullString.indexOf("+");
         }
-        firstSix = fullString.substring(index - 6, index);
+        yyMmDd = fullString.substring(index - 6, index);
     }
 
     public void setLastThree() {
@@ -65,26 +65,25 @@ public class PersonalNumber {
     }
 
     public void setControlNumber() {
-        controlNumber = Integer.parseInt(fullString.substring(fullString.length()-1));
+        controlNumber = Integer.parseInt(fullString.substring(fullString.length() - 1));
     }
 
     public String getCentury() {
-
-        LocalDate localDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
-        LocalDate birthDate = LocalDate.parse(firstSix, DateTimeFormatter.ofPattern("yyMMdd"));
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
+        LocalDate birthDate = LocalDate.parse(yyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
 
         if (fullString.length() == 13) {
             return fullString.substring(0,2);
         }
 
         if (fullString.contains("+")) {
-            if (birthDate.isAfter(localDate)) {
+            if (birthDate.isAfter(currentDate)) {
                 return "18";
             } else {
                 return "19";
             }
         } else {
-            if (birthDate.isBefore(localDate)) {
+            if (birthDate.isBefore(currentDate)) {
                 return "20";
             } else {
                 return "19";
@@ -93,7 +92,7 @@ public class PersonalNumber {
     }
 
     public int luhnsAlgorithm() {
-        String numberToEvaluate = firstSix + lastThree;
+        String numberToEvaluate = yyMmDd + lastThree;
 
         List<Integer> numbers = numberToEvaluate.chars().map(Character::getNumericValue).boxed().toList();
 
