@@ -77,14 +77,6 @@ public class IdentificationNumber {
         return fullString;
     }
 
-    public String getYyMmDd() {
-        return yyMmDd;
-    }
-
-    public String getLastThree() {
-        return lastThree;
-    }
-
     public int getControlNumber() {
         return controlNumber;
     }

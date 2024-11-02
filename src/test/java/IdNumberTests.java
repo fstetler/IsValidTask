@@ -10,6 +10,7 @@ public class IdNumberTests {
 
     ReaderWriter readerWriter = new ReaderWriter();
 
+    // fix so test isnt dependent on a file, make a interface
     @Test
     public void verifyReadingTextFromFile() throws IOException {
         List<String> personalNumbers = readerWriter.readStringsFromFile(Paths.get("src/main/resources/allNumbers.txt").toString());
