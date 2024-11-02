@@ -8,11 +8,11 @@ import static org.junit.Assert.*;
 
 public class IdNumberTests {
 
-    ReaderWriter util = new ReaderWriter();
+    ReaderWriter readerWriter = new ReaderWriter();
 
     @Test
     public void verifyReadingTextFromFile() throws IOException {
-        List<String> personalNumbers = util.readStringsFromFile(Paths.get("src/main/resources/allNumbers.txt").toString());
+        List<String> personalNumbers = readerWriter.readStringsFromFile(Paths.get("src/main/resources/allNumbers.txt").toString());
         int personalNumbersSize = personalNumbers.size();
         String firstValueInPersonalNumbers = "201701102384";
 
