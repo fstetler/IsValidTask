@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class IdNumberTests {
 
-    Util util = new Util();
+    ReaderWriter util = new ReaderWriter();
 
     @Test
     public void verifyReadingTextFromFile() throws IOException {
