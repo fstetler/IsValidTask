@@ -18,7 +18,7 @@ public class IdentificationNumber {
 
     int controlNumber;
 
-    boolean isValid;
+    boolean isCorrectControlNumber;
 
     IdType idType;
 
@@ -32,7 +32,7 @@ public class IdentificationNumber {
         setLastThree();
         setYyMmDd();
         setTypeOfNumber();
-        isValid = luhnsAlgorithm() == controlNumber;
+        isCorrectControlNumber = luhnsAlgorithm() == controlNumber;
         if (idType == IdType.PERSONAL_NUMBER) {
             century = setCentury();
             checkIsValidDate();
@@ -41,11 +41,7 @@ public class IdentificationNumber {
 
     public String setCentury() {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
-        String tempYyMmDd = yyMmDd;
-        if (idType == IdType.SAMORDNINGS_NUMBER) {
-            tempYyMmDd = yyMmDd.substring(0,4) + (Integer.parseInt(yyMmDd.substring(4,6)) - 60);
-        }
-        LocalDate birthDate = LocalDate.parse(tempYyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
+        LocalDate birthDate = LocalDate.parse(yyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
 
         if (fullString.length() == 13) {
             return fullString.substring(0,2);
@@ -102,7 +98,7 @@ public class IdentificationNumber {
         try {
             LocalDate.of(year, month, day);
         } catch (DateTimeException dte) {
-            isValid = false;
+            isCorrectControlNumber = false;
         }
     }
 

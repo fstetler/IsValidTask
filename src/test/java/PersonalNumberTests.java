@@ -51,7 +51,7 @@ public class PersonalNumberTests {
         IdentificationNumber personalNumber = new IdentificationNumber("201701272394");
         personalNumber.initializeIdentificationNumber();
 
-        assertFalse(personalNumber.isValid);
+        assertFalse(personalNumber.isCorrectControlNumber);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class PersonalNumberTests {
         IdentificationNumber personalNumber = new IdentificationNumber("189912299816");
         personalNumber.initializeIdentificationNumber();
 
-        assertTrue(personalNumber.isValid);
+        assertTrue(personalNumber.isCorrectControlNumber);
     }
 
     @Test
@@ -74,6 +74,6 @@ public class PersonalNumberTests {
         IdentificationNumber personalNumber = new IdentificationNumber("556614-3185");
         personalNumber.initializeIdentificationNumber();
         assertEquals(5, personalNumber.luhnsAlgorithm());
-        assertTrue(personalNumber.isValid);
+        assertTrue(personalNumber.isCorrectControlNumber);
     }
 }
