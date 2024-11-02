@@ -6,7 +6,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class PersonalNumberTests {
+public class IdNumberTests {
 
     Util util = new Util();
 
@@ -36,7 +36,7 @@ public class PersonalNumberTests {
     }
 
     @Test
-    public void assertLuhnsAlgorithm() {
+    public void verifyLuhnsAlgorithm() {
 
         IdentificationNumber personalNumber = new IdentificationNumber("811218-9876");
         personalNumber.initializeIdentificationNumber();
@@ -47,33 +47,29 @@ public class PersonalNumberTests {
     }
 
     @Test
-    public void assertFailingPersonalNumberLuhns() {
-        IdentificationNumber personalNumber = new IdentificationNumber("201701272394");
-        personalNumber.initializeIdentificationNumber();
+    public void verifyControlNumber() {
+        IdentificationNumber person1 = new IdentificationNumber("201701272394");
+        IdentificationNumber person2 = new IdentificationNumber("189912299816");
+        person1.initializeIdentificationNumber();
+        person2.initializeIdentificationNumber();
 
-        assertFalse(personalNumber.isCorrectControlNumber);
+        assertFalse(person1.isCorrectControlNumber());
+        assertTrue(person2.isCorrectControlNumber());
     }
 
     @Test
-    public void assertSuccessPersonalNumberLuhns() {
-        IdentificationNumber personalNumber = new IdentificationNumber("189912299816");
-        personalNumber.initializeIdentificationNumber();
-
-        assertTrue(personalNumber.isCorrectControlNumber);
+    public void verifyLuhnsForSamordningsNumber() {
+        IdentificationNumber samordningsNumber = new IdentificationNumber("190910799824");
+        samordningsNumber.initializeIdentificationNumber();
+        assertEquals(4, samordningsNumber.getControlNumber());
+        assertTrue(samordningsNumber.isCorrectControlNumber());
     }
 
     @Test
-    public void verifyValidLuhnsForSamordningsNummer() {
-        IdentificationNumber personalNumber = new IdentificationNumber("190910799824");
-        personalNumber.initializeIdentificationNumber();
-        assertEquals(4, personalNumber.controlNumber);
-    }
-
-    @Test
-    public void verifyOrganisationNumberLuhnsValue() {
-        IdentificationNumber personalNumber = new IdentificationNumber("556614-3185");
-        personalNumber.initializeIdentificationNumber();
-        assertEquals(5, personalNumber.luhnsAlgorithm());
-        assertTrue(personalNumber.isCorrectControlNumber);
+    public void verifyLuhnsForOrganisationsNumber() {
+        IdentificationNumber organisationsNumber = new IdentificationNumber("556614-3185");
+        organisationsNumber.initializeIdentificationNumber();
+        assertEquals(5, organisationsNumber.luhnsAlgorithm());
+        assertTrue(organisationsNumber.isCorrectControlNumber());
     }
 }

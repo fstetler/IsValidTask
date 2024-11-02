@@ -8,19 +8,19 @@ import java.util.stream.IntStream;
 
 public class IdentificationNumber {
 
-    String fullString;
+    private String fullString;
 
-    String century;
+    private String century;
 
-    String yyMmDd;
+    private String yyMmDd;
 
-    String lastThree;
+    private String lastThree;
 
-    int controlNumber;
+    private int controlNumber;
 
-    boolean isCorrectControlNumber;
+    private boolean isCorrectControlNumber;
 
-    IdType idType;
+    private IdType idType;
 
     public IdentificationNumber(String number) {
         this.fullString = number;
@@ -71,6 +71,30 @@ public class IdentificationNumber {
 
     public String getCentury() {
         return century;
+    }
+
+    public String getFullString() {
+        return fullString;
+    }
+
+    public String getYyMmDd() {
+        return yyMmDd;
+    }
+
+    public String getLastThree() {
+        return lastThree;
+    }
+
+    public int getControlNumber() {
+        return controlNumber;
+    }
+
+    public boolean isCorrectControlNumber() {
+        return isCorrectControlNumber;
+    }
+
+    public IdType getIdType() {
+        return idType;
     }
 
     private void setTypeOfNumber() {
