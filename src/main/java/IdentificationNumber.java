@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class PersonalNumber {
+public class IdentificationNumber {
 
     String fullString;
 
@@ -26,72 +26,24 @@ public class PersonalNumber {
 
     boolean isOrganisationsNumber;
 
-    public PersonalNumber(String number) {
+    public IdentificationNumber(String number) {
         this.fullString = number;
     }
 
-    public void initializePersonalNumber() {
+    public void initializeIdentificationNumber() {
         addDashIfNeeded();
-
         setControlNumber();
         setLastThree();
         setYyMmDd();
-        setTypeOfNummer();
+        setTypeOfNumber();
         isValid = luhnsAlgorithm() == controlNumber;
         if (isPersonalNumber) {
-            century = getCentury();
+            century = setCentury();
             checkIsValidDate();
         }
     }
 
-    private void setTypeOfNummer() {
-        if (Integer.parseInt(yyMmDd.substring(4,6)) > 31) {
-            isSamOrdningsNumber = true;
-        } else if (Integer.parseInt(yyMmDd.substring(2,4)) >= 20) {
-            isOrganisationsNumber = true;
-        } else {
-            isPersonalNumber = true;
-        }
-    }
-
-    public void addDashIfNeeded() {
-        if (!(fullString.contains("-") || fullString.contains("+"))) {
-            StringBuilder stringBuilder = new StringBuilder(fullString);
-            stringBuilder.insert(fullString.length() - 4, "-");
-            fullString = stringBuilder.toString();
-        }
-    }
-
-    public void checkIsValidDate() {
-        int year = Integer.parseInt(century + yyMmDd.substring(0,2));
-        int month = Integer.parseInt(yyMmDd.substring(2,4));
-        int day = isSamOrdningsNumber ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
-        try {
-            LocalDate.of(year, month, day);
-        } catch (DateTimeException dte) {
-            isValid = false;
-        }
-    }
-
-    public void setYyMmDd() {
-        int index;
-        if (fullString.contains("-")) {
-            index = fullString.indexOf("-");
-        } else {
-            index = fullString.indexOf("+");
-        }
-        yyMmDd = fullString.substring(index - 6, index);
-    }
-
-    public void setLastThree() {
-        lastThree = fullString.substring(fullString.length() - 4, fullString.length() - 1);
-    }
-
-    public void setControlNumber() {
-        controlNumber = Integer.parseInt(fullString.substring(fullString.length() - 1));
-    }
-
-    public String getCentury() {
+    public String setCentury() {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
         String tempYyMmDd = yyMmDd;
         if (isSamOrdningsNumber) {
@@ -123,6 +75,57 @@ public class PersonalNumber {
         int totalSum = sumAllNumbersFromString(joinedNumbers);
 
         return luhnsCalculation(totalSum);
+    }
+
+    public String getCentury() {
+        return century;
+    }
+
+    private void setTypeOfNumber() {
+        if (Integer.parseInt(yyMmDd.substring(4,6)) > 31) {
+            isSamOrdningsNumber = true;
+        } else if (Integer.parseInt(yyMmDd.substring(2,4)) >= 20) {
+            isOrganisationsNumber = true;
+        } else {
+            isPersonalNumber = true;
+        }
+    }
+
+    private void addDashIfNeeded() {
+        if (!(fullString.contains("-") || fullString.contains("+"))) {
+            StringBuilder stringBuilder = new StringBuilder(fullString);
+            stringBuilder.insert(fullString.length() - 4, "-");
+            fullString = stringBuilder.toString();
+        }
+    }
+
+    private void checkIsValidDate() {
+        int year = Integer.parseInt(century + yyMmDd.substring(0,2));
+        int month = Integer.parseInt(yyMmDd.substring(2,4));
+        int day = isSamOrdningsNumber ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
+        try {
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException dte) {
+            isValid = false;
+        }
+    }
+
+    private void setYyMmDd() {
+        int index;
+        if (fullString.contains("-")) {
+            index = fullString.indexOf("-");
+        } else {
+            index = fullString.indexOf("+");
+        }
+        yyMmDd = fullString.substring(index - 6, index);
+    }
+
+    private void setLastThree() {
+        lastThree = fullString.substring(fullString.length() - 4, fullString.length() - 1);
+    }
+
+    private void setControlNumber() {
+        controlNumber = Integer.parseInt(fullString.substring(fullString.length() - 1));
     }
 
     private List<Integer> numbersFromString(String numbers) {

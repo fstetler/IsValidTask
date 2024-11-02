@@ -16,19 +16,19 @@ public class PersonalNumberTests {
         int personalNumbersSize = personalNumbers.size();
         String firstValueInPersonalNumbers = "201701102384";
 
-        assertEquals(17, personalNumbersSize);
+        assertEquals(21, personalNumbersSize);
         assertEquals(firstValueInPersonalNumbers, personalNumbers.getFirst());
     }
 
     @Test
     public void verifyCentury() {
-        PersonalNumber first = new PersonalNumber("900118+9811");
-        PersonalNumber second = new PersonalNumber("050217+5633");
-        PersonalNumber third = new PersonalNumber("201701102384");
+        IdentificationNumber first = new IdentificationNumber("900118+9811");
+        IdentificationNumber second = new IdentificationNumber("050217+5633");
+        IdentificationNumber third = new IdentificationNumber("201701102384");
 
-        first.initializePersonalNumber();
-        second.initializePersonalNumber();
-        third.initializePersonalNumber();
+        first.initializeIdentificationNumber();
+        second.initializeIdentificationNumber();
+        third.initializeIdentificationNumber();
 
         assertEquals("18", first.getCentury());
         assertEquals("19", second.getCentury());
@@ -38,8 +38,8 @@ public class PersonalNumberTests {
     @Test
     public void assertLuhnsAlgorithm() {
 
-        PersonalNumber personalNumber = new PersonalNumber("811218-9876");
-        personalNumber.initializePersonalNumber();
+        IdentificationNumber personalNumber = new IdentificationNumber("811218-9876");
+        personalNumber.initializeIdentificationNumber();
 
         int luhnsValue = personalNumber.luhnsAlgorithm();
 
@@ -48,31 +48,31 @@ public class PersonalNumberTests {
 
     @Test
     public void assertFailingPersonalNumberLuhns() {
-        PersonalNumber personalNumber = new PersonalNumber("201701272394");
-        personalNumber.initializePersonalNumber();
+        IdentificationNumber personalNumber = new IdentificationNumber("201701272394");
+        personalNumber.initializeIdentificationNumber();
 
         assertFalse(personalNumber.isValid);
     }
 
     @Test
     public void assertSuccessPersonalNumberLuhns() {
-        PersonalNumber personalNumber = new PersonalNumber("189912299816");
-        personalNumber.initializePersonalNumber();
+        IdentificationNumber personalNumber = new IdentificationNumber("189912299816");
+        personalNumber.initializeIdentificationNumber();
 
         assertTrue(personalNumber.isValid);
     }
 
     @Test
     public void verifyValidLuhnsForSamordningsNummer() {
-        PersonalNumber personalNumber = new PersonalNumber("190910799824");
-        personalNumber.initializePersonalNumber();
+        IdentificationNumber personalNumber = new IdentificationNumber("190910799824");
+        personalNumber.initializeIdentificationNumber();
         assertEquals(4, personalNumber.controlNumber);
     }
 
     @Test
     public void verifyOrganisationNumberLuhnsValue() {
-        PersonalNumber personalNumber = new PersonalNumber("556614-3185");
-        personalNumber.initializePersonalNumber();
+        IdentificationNumber personalNumber = new IdentificationNumber("556614-3185");
+        personalNumber.initializeIdentificationNumber();
         assertEquals(5, personalNumber.luhnsAlgorithm());
         assertTrue(personalNumber.isValid);
     }

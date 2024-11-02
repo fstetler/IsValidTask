@@ -9,23 +9,40 @@ public class Main {
 
         List<String> numbers = util.readStringsFromFile(Paths.get("src/main/resources/allNumbers.txt").toString());
 
-        List<PersonalNumber> personalNumbers = numbers.stream().map(PersonalNumber::new).toList();
-        personalNumbers.forEach(PersonalNumber::initializePersonalNumber);
+        List<IdentificationNumber> identificationNumbers = numbers.stream().map(IdentificationNumber::new).toList();
+        identificationNumbers.forEach(IdentificationNumber::initializeIdentificationNumber);
 
-        List<String> validPersonalNumbers = personalNumbers.stream().filter(
-                pn -> pn.isPersonalNumber).filter(pn -> pn.isValid).map(pn -> pn.fullString).toList();
-        List<String> notValidPersonalNumbers = personalNumbers.stream().filter(
-                pn -> pn.isPersonalNumber).filter(pn -> !pn.isValid).map(pn -> pn.fullString).toList();
+        List<String> validPersonalNumbers = identificationNumbers.stream()
+                .filter(pn -> pn.isPersonalNumber)
+                .filter(pn -> pn.isValid)
+                .map(pn -> pn.fullString)
+                .toList();
+        List<String> notValidPersonalNumbers = identificationNumbers.stream()
+                .filter(pn -> pn.isPersonalNumber)
+                .filter(pn -> !pn.isValid)
+                .map(pn -> pn.fullString)
+                .toList();
 
-        List<String> validSamordningsNumbers = personalNumbers.stream().filter(
-                pn -> pn.isSamOrdningsNumber).filter(pn -> pn.isValid).map(pn -> pn.fullString).toList();
-        List<String> notValidSamordningsNumbers = personalNumbers.stream().filter(
-                pn -> pn.isSamOrdningsNumber).filter(pn -> !pn.isValid).map(pn -> pn.fullString).toList();
+        List<String> validSamordningsNumbers = identificationNumbers.stream()
+                .filter(pn -> pn.isSamOrdningsNumber)
+                .filter(pn -> pn.isValid)
+                .map(pn -> pn.fullString).toList();
+        List<String> notValidSamordningsNumbers = identificationNumbers.stream()
+                .filter(pn -> pn.isSamOrdningsNumber)
+                .filter(pn -> !pn.isValid)
+                .map(pn -> pn.fullString)
+                .toList();
 
-        List<String> validOrganisationsNumbers = personalNumbers.stream().filter(
-                pn -> pn.isOrganisationsNumber).filter(pn -> pn.isValid).map(pn -> pn.fullString).toList();
-        List<String> notValidOrganisationsNumbers = personalNumbers.stream().filter(
-                pn -> pn.isOrganisationsNumber).filter(pn -> !pn.isValid).map(pn -> pn.fullString).toList();
+        List<String> validOrganisationsNumbers = identificationNumbers.stream()
+                .filter(pn -> pn.isOrganisationsNumber)
+                .filter(pn -> pn.isValid)
+                .map(pn -> pn.fullString)
+                .toList();
+        List<String> notValidOrganisationsNumbers = identificationNumbers.stream()
+                .filter(pn -> pn.isOrganisationsNumber)
+                .filter(pn -> !pn.isValid)
+                .map(pn -> pn.fullString)
+                .toList();
 
 
         util.txtWriter(validPersonalNumbers, "src/main/resources/validPersonalNumbersFile.txt");
