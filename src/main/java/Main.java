@@ -13,33 +13,33 @@ public class Main {
         identificationNumbers.forEach(IdentificationNumber::initializeIdentificationNumber);
 
         List<String> validPersonalNumbers = identificationNumbers.stream()
-                .filter(pn -> pn.isPersonalNumber)
+                .filter(pn -> pn.idType == IdType.PERSONAL_NUMBER)
                 .filter(pn -> pn.isValid)
                 .map(pn -> pn.fullString)
                 .toList();
         List<String> notValidPersonalNumbers = identificationNumbers.stream()
-                .filter(pn -> pn.isPersonalNumber)
+                .filter(pn -> pn.idType == IdType.PERSONAL_NUMBER)
                 .filter(pn -> !pn.isValid)
                 .map(pn -> pn.fullString)
                 .toList();
 
         List<String> validSamordningsNumbers = identificationNumbers.stream()
-                .filter(pn -> pn.isSamOrdningsNumber)
+                .filter(pn -> pn.idType == IdType.SAMORDNINGS_NUMBER)
                 .filter(pn -> pn.isValid)
                 .map(pn -> pn.fullString).toList();
         List<String> notValidSamordningsNumbers = identificationNumbers.stream()
-                .filter(pn -> pn.isSamOrdningsNumber)
+                .filter(pn -> pn.idType == IdType.SAMORDNINGS_NUMBER)
                 .filter(pn -> !pn.isValid)
                 .map(pn -> pn.fullString)
                 .toList();
 
         List<String> validOrganisationsNumbers = identificationNumbers.stream()
-                .filter(pn -> pn.isOrganisationsNumber)
+                .filter(pn -> pn.idType == IdType.ORGANISATIONS_NUMBER)
                 .filter(pn -> pn.isValid)
                 .map(pn -> pn.fullString)
                 .toList();
         List<String> notValidOrganisationsNumbers = identificationNumbers.stream()
-                .filter(pn -> pn.isOrganisationsNumber)
+                .filter(pn -> pn.idType == IdType.ORGANISATIONS_NUMBER)
                 .filter(pn -> !pn.isValid)
                 .map(pn -> pn.fullString)
                 .toList();

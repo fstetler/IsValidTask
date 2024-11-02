@@ -20,11 +20,7 @@ public class IdentificationNumber {
 
     boolean isValid;
 
-    boolean isSamOrdningsNumber;
-
-    boolean isPersonalNumber;
-
-    boolean isOrganisationsNumber;
+    IdType idType;
 
     public IdentificationNumber(String number) {
         this.fullString = number;
@@ -37,7 +33,7 @@ public class IdentificationNumber {
         setYyMmDd();
         setTypeOfNumber();
         isValid = luhnsAlgorithm() == controlNumber;
-        if (isPersonalNumber) {
+        if (idType == IdType.PERSONAL_NUMBER) {
             century = setCentury();
             checkIsValidDate();
         }
@@ -46,7 +42,7 @@ public class IdentificationNumber {
     public String setCentury() {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Stockholm"));
         String tempYyMmDd = yyMmDd;
-        if (isSamOrdningsNumber) {
+        if (idType == IdType.SAMORDNINGS_NUMBER) {
             tempYyMmDd = yyMmDd.substring(0,4) + (Integer.parseInt(yyMmDd.substring(4,6)) - 60);
         }
         LocalDate birthDate = LocalDate.parse(tempYyMmDd, DateTimeFormatter.ofPattern("yyMMdd"));
@@ -83,11 +79,11 @@ public class IdentificationNumber {
 
     private void setTypeOfNumber() {
         if (Integer.parseInt(yyMmDd.substring(4,6)) > 31) {
-            isSamOrdningsNumber = true;
+            idType = IdType.SAMORDNINGS_NUMBER;
         } else if (Integer.parseInt(yyMmDd.substring(2,4)) >= 20) {
-            isOrganisationsNumber = true;
+            idType = IdType.ORGANISATIONS_NUMBER;
         } else {
-            isPersonalNumber = true;
+            idType = IdType.PERSONAL_NUMBER;
         }
     }
 
@@ -102,7 +98,7 @@ public class IdentificationNumber {
     private void checkIsValidDate() {
         int year = Integer.parseInt(century + yyMmDd.substring(0,2));
         int month = Integer.parseInt(yyMmDd.substring(2,4));
-        int day = isSamOrdningsNumber ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
+        int day = idType == IdType.SAMORDNINGS_NUMBER ? Integer.parseInt(yyMmDd.substring(4,6)) - 60 : Integer.parseInt(yyMmDd.substring(4,6));
         try {
             LocalDate.of(year, month, day);
         } catch (DateTimeException dte) {
