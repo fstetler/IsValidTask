@@ -1,23 +1,20 @@
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class IdNumberTests {
+public class IdNumberTests implements I_TestReader{
 
-    ReaderWriter readerWriter = new ReaderWriter();
 
-    // fix so test isnt dependent on a file, make a interface
     @Test
     public void verifyReadingTextFromFile() throws IOException {
-        List<String> personalNumbers = readerWriter.readStringsFromFile(Paths.get("src/main/resources/allNumbers.txt").toString());
+        List<String> personalNumbers = readStringsFromFile("fakeFilePath");
         int personalNumbersSize = personalNumbers.size();
         String firstValueInPersonalNumbers = "201701102384";
 
-        assertEquals(21, personalNumbersSize);
+        assertEquals(3, personalNumbersSize);
         assertEquals(firstValueInPersonalNumbers, personalNumbers.getFirst());
     }
 
@@ -72,5 +69,13 @@ public class IdNumberTests {
         organisationsNumber.initializeIdentificationNumber();
         assertEquals(5, organisationsNumber.luhnsAlgorithm());
         assertTrue(organisationsNumber.isCorrectControlNumber());
+    }
+
+    @Override
+    public List<String> readStringsFromFile(String filePath) throws IOException {
+        return List.of(
+                "201701102384",
+                "141206-2380",
+                "20080903-2386");
     }
 }

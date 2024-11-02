@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReaderWriter {
+public class ReaderWriter implements I_TestReader{
 
     public List<String> readStringsFromFile(String filePath) throws IOException {
         List<String> stringList = new ArrayList<>();
