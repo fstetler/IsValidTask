@@ -8,7 +8,9 @@ public class SamordningsNumberValidator extends GeneralNumberCalculations implem
     }
 
     private boolean samordningsNumberisValid(String value) {
-        if (value.length() == 7) {
+        int maxIdLength = 13;
+        int minIdLength = 10;
+        if (value.length() > maxIdLength || value.length() < minIdLength) {
             return false;
         }
         String fullString = addDashIfNeeded(value);
