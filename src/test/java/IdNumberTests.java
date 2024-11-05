@@ -1,3 +1,5 @@
+import Assignment.I_TestReader;
+import Assignment.IdentificationNumber;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -5,7 +7,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class IdNumberTests implements I_TestReader{
+public class IdNumberTests implements I_TestReader {
 
 
     @Test
