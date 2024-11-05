@@ -8,7 +8,9 @@ public class PersonalNumberValidator extends GeneralNumberCalculations implement
     }
 
     private boolean personNumberIsValid(String value) {
-
+        if (value.length() == 7) {
+            return false;
+        }
         String fullString = addDashIfNeeded(value);
         int controlNumber = getControlNumber(fullString);
         String lastThree = getLastThree(fullString);

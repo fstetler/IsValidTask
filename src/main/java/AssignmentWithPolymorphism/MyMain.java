@@ -16,7 +16,8 @@ public class MyMain {
         List<Validator> validators = List.of(
                 new PersonalNumberValidator(),
                 new SamordningsNumberValidator(),
-                new OrganisationsNumberValidator());
+                new OrganisationsNumberValidator(),
+                new CarLicensePlateValidator());
 
         for (Validator validator : validators) {
             for (String string : strings) {

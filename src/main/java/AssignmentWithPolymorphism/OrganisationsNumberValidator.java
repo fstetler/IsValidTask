@@ -8,6 +8,9 @@ public class OrganisationsNumberValidator extends GeneralNumberCalculations impl
     }
 
     private boolean organisationsNumberIsValid(String value) {
+        if (value.length() == 7) {
+            return false;
+        }
         String fullString = addDashIfNeeded(value);
         int controlNumber = getControlNumber(fullString);
         String lastThree = getLastThree(fullString);

@@ -8,6 +8,9 @@ public class SamordningsNumberValidator extends GeneralNumberCalculations implem
     }
 
     private boolean samordningsNumberisValid(String value) {
+        if (value.length() == 7) {
+            return false;
+        }
         String fullString = addDashIfNeeded(value);
         int controlNumber = getControlNumber(fullString);
         String lastThree = getLastThree(fullString);
